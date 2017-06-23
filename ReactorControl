@@ -1,0 +1,45 @@
+https://pastebin.com/f4d79WMG
+
+minEnergyStoredPercent = 50
+maxEnergyStoredPercent = 95
+loopTime = 2
+
+reactor = peripheral.wrap("BigReactors-Reactor_1")
+
+local function round(num, places)
+  local mult = 10^places
+  local addon = nil
+  if ((num * mult) < 0) then
+    addon = -.5
+  else
+    addon = .5
+  end
+  
+  local integer, decimal = math.modf(num*mult+addon)
+  newNum = integer/mult
+  return newNum
+end
+
+local function getEnergyStoredPercent()
+  local energyBufferStorage = reactor.getEnergyStored()
+  return round(energyBufferStorage/100000, 1)
+end
+
+print("Monitoring Reactor...")
+print("Hold Ctrl-T to terminate.")
+
+while true do
+
+  local energyStored = getEnergyStoredPercent()
+  
+  if energyStored >= maxEnergyStoredPercent then
+    reactor.setActive(false)
+  end
+  
+  if energyStored <= minEnergyStoredPercent then
+    reactor.setActive(true)
+  end
+  
+  sleep(loopTime)
+  
+end
