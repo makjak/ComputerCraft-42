@@ -1,3 +1,5 @@
+https://pastebin.com/AQgubk6R
+
 local reactor1 = peripheral.wrap("BigReactors-Reactor_1")
 local mon = peripheral.wrap("monitor_0")
 
