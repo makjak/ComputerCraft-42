@@ -1,0 +1,70 @@
+local reactor1 = peripheral.wrap("BigReactors-Reactor_1")
+local mon = peripheral.wrap("monitor_0")
+
+print("Showing stats on Reactor #1...")
+print("Hold Ctrl-T to terminate.")
+
+local function round(num, places)
+  local mult = 10^places
+  local addon = nil
+  if ((num * mult) < 0) then
+    addon = -.5
+  else
+    addon = .5
+  end
+  
+  local integer, decimal = math.modf(num*mult+addon)
+  newNum = integer/mult
+  return newNum
+end
+
+local function getFuelInIngots()
+  local fuelInMB = reactor1.getFuelAmount()
+  return round(fuelInMB/1000, 1)
+end
+
+while true do
+  mon.clear()
+ 
+  -- Begin Reactor 1
+  --mon.setCursorPos(1,1)
+  --mon.setTextColor(colors.white)
+  --mon.write("Reactor #: ")
+  --mon.setTextColor(colors.lime)
+  --mon.write("1")
+  
+  mon.setTextScale(1)
+  mon.setCursorPos(1,1)
+  mon.setTextColor(colors.white)
+  mon.write("Active: ")
+  mon.setTextColor(colors.lime)
+  mon.write(reactor1.getActive())
+   
+  mon.setCursorPos(1,2)
+  mon.setTextColor(colors.white)
+  mon.write("RF/T: ")  
+  mon.setTextColor(colors.lime)
+  mon.write(math.floor(reactor1.getEnergyProducedLastTick()))
+ 
+  mon.setCursorPos(1,3)
+  mon.setTextColor(colors.white)
+  mon.write("RF Stored: ")
+  mon.setTextColor(colors.lime)
+  mon.write(math.floor(reactor1.getEnergyStored()))
+
+  mon.setCursorPos(1,4)
+  mon.setTextColor(colors.white)
+  mon.write("Casing Heat: ")
+  mon.setTextColor(colors.lime)
+  mon.write(math.floor(reactor1.getCasingTemperature()))
+ 
+  mon.setCursorPos(1,5)
+  mon.setTextColor(colors.white)
+  mon.write("Fuel Amount: ")
+  mon.setTextColor(colors.lime)
+  local fuelAmount = getFuelInIngots()
+  mon.write(fuelAmount)
+  -- End Reactor 1
+
+   sleep(5)
+end
